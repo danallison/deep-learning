@@ -17,24 +17,7 @@ class NeuralNetwork(object):
         self.lr = learning_rate
 
         #### TODO: Set self.activation_function to your implemented sigmoid function ####
-        #
-        # Note: in Python, you can define a function with a lambda expression,
-        # as shown below.
-
-        # NOTE I know I'm supposed to use sigmoid as the activation function,
-        # but I'm using relu instead because I failed to achieve the required performance with sigmoid
-        # while also avoiding the timeout error when submitting the assignment.
-        # self.activation_function = lambda x : 1 / (1 + np.exp(-x))
-        self.activation_function = lambda x : np.maximum(0, x)
-        self.activation_function_prime = lambda x : np.heaviside(x, 0)
-
-        ### If the lambda code above is not something you're familiar with,
-        # You can uncomment out the following three lines and put your
-        # implementation there instead.
-        #
-        #def sigmoid(x):
-        #    return 0  # Replace 0 with your sigmoid calculation here
-        #self.activation_function = sigmoid
+        self.activation_function = lambda x : 1 / (1 + np.exp(-x))
 
 
     def train(self, features, targets):
@@ -95,8 +78,7 @@ class NeuralNetwork(object):
         output_error_term = error
 
         hidden_error = np.dot(output_error_term, self.weights_hidden_to_output.T)
-        # hidden_error_term = hidden_error * hidden_outputs * (1 - hidden_outputs)
-        hidden_error_term = hidden_error * self.activation_function_prime(hidden_outputs)
+        hidden_error_term = hidden_error * hidden_outputs * (1 - hidden_outputs)
 
         # Weight step (input to hidden)
         delta_weights_i_h += hidden_error_term * X[:,None]
@@ -138,7 +120,7 @@ class NeuralNetwork(object):
 #########################################################
 # Set your hyperparameters here
 ##########################################################
-iterations = 1000
-learning_rate = 0.3
-hidden_nodes = 44
+iterations = 2000
+learning_rate = 0.85
+hidden_nodes = 10
 output_nodes = 1
